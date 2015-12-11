@@ -32,12 +32,13 @@ class FileRevision
                end
     end
 
-    if report.nil?
-      puts "WARNING: Could not parse #{@path}"
+    if report.nil? | report.empty?
+      STDOUT.write "WARNING: Could not parse #{@path}"
     else
-      e = 1 + report[:num_dependencies]
-      b = 1 + report[:num_branches]
-      s = 1 + report[:num_superclasses]
+      print '.' # prints '.' to indicate something is happening 
+      e = 1 + report.fetch(:num_dependencies, 1)
+      b = 1 + report.fetch(:num_branches, 1)
+      s = 1 + report.fetch(:num_superclasses, 1)
       report['weight'] = b * e * s
       report[:churn] = @repo.num_commits_involving(@path)
       report[:filename] = @path
